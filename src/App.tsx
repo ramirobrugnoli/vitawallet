@@ -11,8 +11,8 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/" />} />
         <Route path="/" element={user ? <HomePage /> : <Navigate to="/login" />} />
+        <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/" />} />
         <Route path="/exchange" element={user ? <ExchangePage /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
