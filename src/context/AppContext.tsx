@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, ReactNode } from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
 interface User {
   email: string;
@@ -8,25 +8,25 @@ interface AppContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  isLoading: boolean;
-  error: string | null;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
 
-interface AppProviderProps {
-  children: ReactNode;
-}
-
-export const AppProvider = ({ children }: AppProviderProps) => {
+export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log('user en context:', user);
+  }, [user]);
 
   const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    setError(null);
-
     const myHeaders = new Headers();
     myHeaders.append('app-name', 'ANGIE');
 
@@ -40,7 +40,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         method: 'POST',
         headers: myHeaders,
         body: urlencoded,
-        redirect: 'follow',
       });
 
       if (!response.ok) {
@@ -48,51 +47,34 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       }
 
       const data = await response.json();
-      console.log('data que devolvio login:', data);
+      /* const userData: User = { email: data.data.email }; */
 
-      const accessToken = response.headers.get('access-token');
-      const client = response.headers.get('client');
-      const uid = response.headers.get('uid');
-
-      if (!accessToken || !client || !uid) {
-        throw new Error('Missing authentication headers');
-      }
-
-      localStorage.setItem('access-token', accessToken);
-      localStorage.setItem('client', client);
-      localStorage.setItem('uid', uid);
-
+      localStorage.setItem('user', JSON.stringify(data.data));
       setUser(data.data);
+
+      localStorage.setItem('access-token', response.headers.get('access-token') || '');
+      localStorage.setItem('client', response.headers.get('client') || '');
+      localStorage.setItem('uid', response.headers.get('uid') || '');
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-      setError(errorMessage);
-      throw new Error(errorMessage); //dentro del catch vuelvo a lanzar el error para poder agarrarlo en el componente y condicionar la dredireccion
-    } finally {
-      setIsLoading(false);
+      console.error('Login error:', error);
+      throw error;
     }
   };
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('user');
     localStorage.removeItem('access-token');
     localStorage.removeItem('client');
     localStorage.removeItem('uid');
   };
 
-  const value = {
-    user,
-    login,
-    logout,
-    isLoading,
-    error,
-  };
-
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return <AppContext.Provider value={{ user, login, logout }}>{children}</AppContext.Provider>;
 };
 
-export const useAppContext = (): AppContextType => {
+export const useAppContext = () => {
   const context = useContext(AppContext);
-  if (context === null) {
+  if (!context) {
     throw new Error('useAppContext must be used within an AppProvider');
   }
   return context;
