@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from '../../components/Login';
 import { useAppContext } from '../../context/AppContext';
@@ -8,6 +8,7 @@ import amicoImage from '../../assets/Login/amico.png';
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login, isLoading, error } = useAppContext();
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const handleLogin = async (email: string, password: string) => {
     try {
@@ -15,9 +16,9 @@ const LoginPage = () => {
       navigate('/home');
     } catch (error) {
       console.error('Login failed', error);
+      setLoginError(error instanceof Error ? error.message : 'An unknown error occurred');
     }
   };
-
   return (
     <div className={styles.loginPageContainer}>
       <div className={styles.loginTitleContainer}>
@@ -26,7 +27,7 @@ const LoginPage = () => {
       <div className={styles.formAndImageContainer}>
         <LoginForm onSubmit={handleLogin} />
         {isLoading && <p>Cargando...</p>}
-        {error && <p className={styles.errorMessage}>{error}</p>}
+        {loginError && <p className={styles.errorMessage}>{loginError}</p>}
         <img src={amicoImage} alt="Amico" className={styles.loginImage} />
       </div>
     </div>

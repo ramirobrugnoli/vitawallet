@@ -54,13 +54,19 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       const client = response.headers.get('client');
       const uid = response.headers.get('uid');
 
-      localStorage.setItem('access-token', accessToken || '');
-      localStorage.setItem('client', client || '');
-      localStorage.setItem('uid', uid || '');
+      if (!accessToken || !client || !uid) {
+        throw new Error('Missing authentication headers');
+      }
+
+      localStorage.setItem('access-token', accessToken);
+      localStorage.setItem('client', client);
+      localStorage.setItem('uid', uid);
 
       setUser(data.data);
     } catch (error) {
-      setError('Login failed. Please check your credentials.');
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      setError(errorMessage);
+      throw new Error(errorMessage); //dentro del catch vuelvo a lanzar el error para poder agarrarlo en el componente y condicionar la dredireccion
     } finally {
       setIsLoading(false);
     }
