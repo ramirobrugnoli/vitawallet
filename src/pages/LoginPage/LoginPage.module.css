@@ -1,0 +1,23 @@
+.loginPageContainer {
+  padding: 4vh 10vh;
+}
+
+.loginTitleContainer {
+  padding: 20px;
+}
+
+.loginTitleContainer h1 {
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 65.37px;
+  text-align: left;
+}
+
+.loginFormContainer {
+  margin: 1rem;
+}
+
+.formAndImageContainer {
+  display: flex;
+  justify-content: space-between;
+}
