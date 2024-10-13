@@ -1,7 +1,59 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
-interface User {
+interface Balances {
+  usd: number;
+  usdc: number;
+  usdt: number;
+  btc: number;
+}
+
+interface LoginInfo {
+  country: string;
+  city: string;
+  created_at: string;
+  ip_address: string;
+}
+
+interface Address {
+  bsc?: string;
+  dummy?: string;
+}
+
+interface ActiveCryptos {
+  btc: { addresses: Address[] };
+  usdt: { addresses: Address[] };
+  usdc: { addresses: Address[] };
+}
+
+interface UserAttributes {
   email: string;
+  first_name: string;
+  last_name: string;
+  birthdate: string;
+  document_type: string;
+  document_number: string;
+  daily_transbank_recharge_limit_total: string;
+  balances: Balances;
+  login_current: LoginInfo;
+  login_last: LoginInfo;
+  active_cryptos: ActiveCryptos;
+  is_email_code_verification: boolean;
+  country_name: string;
+  residence_country_name: string;
+  state_name: string;
+  city_name: string;
+  phone: string;
+}
+
+interface User {
+  id: string;
+  type: string;
+  attributes: UserAttributes;
+  relationships: {
+    country: { data: { id: string; type: string } };
+    residence_country: { data: { id: string; type: string } };
+    state: { data: { id: string; type: string } };
+  };
 }
 
 interface AppContextType {
