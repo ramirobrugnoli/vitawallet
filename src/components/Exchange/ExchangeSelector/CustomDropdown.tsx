@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import styles from './CustomDropdown.module.css';
 import { DropdownArrow } from '../../VisibilityIcons';
+import { Option } from '../../../interfaces';
 
-interface Option {
-  value: string;
-  label: string;
-  icon: string;
-}
-
-interface CustomDropdownProps {
+export interface CustomDropdownProps {
   options: Option[];
   value: string;
   onChange: (value: string) => void;
