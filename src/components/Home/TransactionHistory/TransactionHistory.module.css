@@ -17,6 +17,13 @@
   border-collapse: collapse;
 }
 
+.transactionTable tbody {
+  display: block;
+  max-height: 45vh;
+  scrollbar-width: thin;
+  overflow-y: scroll;
+}
+
 .transactionTable th,
 .transactionTable td {
   padding: 12px 0px;

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Balances } from '../../../context/AppContext';
+import { Balance } from '../../../context/AppContext';
 import UnitBalance from './UnitBalance';
 import styles from './MyBalances.module.css';
 
 type MyBalancesProps = {
-  balances: Balances;
+  balances: Balance;
 };
 
 const MyBalances = ({ balances }: MyBalancesProps) => {

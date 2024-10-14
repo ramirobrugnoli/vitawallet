@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
-type Balance = {
+export type Balance = {
   [key: string]: number;
 };
 
