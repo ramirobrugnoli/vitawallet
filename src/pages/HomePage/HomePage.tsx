@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAppContext } from '../../context/AppContext';
+import { SidebarHome, HelloTitle } from '../../components/Home';
 
 const HomePage = () => {
   const { user, logout } = useAppContext();
@@ -7,9 +8,8 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1>Welcome to HomePage</h1>
-      <p>User Email: {user?.email}</p>
-      <button onClick={logout}>logout</button>
+      <HelloTitle userName={'David'} />
+      <SidebarHome />
     </div>
   );
 };

@@ -1,47 +1,48 @@
 .loginForm {
-  min-width: 387px;
-  padding: 20px;
+  width: 100%;
+  max-width: 387px;
+}
+
+.inputGroup {
+  margin-bottom: 1rem;
 }
 
 .inputGroup label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
   font-size: 14px;
-  color: #333;
-}
-
-.inputGroup input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--color-gray-1);
-  border-radius: 6px;
-  font-size: 16px;
-  min-height: 30px;
-  width: -webkit-fill-available;
-}
-
-.inputGroup {
-  margin-bottom: 20px;
+  color: var(--color-black);
+  font-weight: 500;
 }
 
 .loginInput {
   position: relative;
 }
 
+.inputGroup input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--color-gray-1);
+  border-radius: 6px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
 .inputIcons {
   position: absolute;
   right: 10px;
-  top: 55%;
+  top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0px !important;
+  padding: 0;
 }
 
 .forgotPassword {
   text-align: right;
-  margin-bottom: 20px;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
 }
 
 .forgotPassword a {
@@ -52,8 +53,7 @@
 
 .submitButton {
   width: 100%;
-  height: 54px;
-  padding: 12px;
+  padding: 0.75rem;
   background-color: var(--color-gray-2);
   border: none;
   border-radius: 6px;
@@ -62,7 +62,7 @@
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 50px;
+  margin-top: 5vh;
 }
 
 .submitButton:hover {
@@ -83,4 +83,8 @@
 .submitButton.active {
   background: var(--gradient-blue);
   cursor: pointer;
+}
+
+.submitButton.active:hover {
+  opacity: 0.9;
 }

@@ -1,28 +1,53 @@
 .loginPageContainer {
-  padding: 4vh 10vh;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  margin: 0 auto;
+  padding: 0 120px;
+  box-sizing: border-box;
 }
 
-.loginTitleContainer {
-  padding: 20px;
+.loginContent {
+  grid-column: 1 / span 5;
+  display: flex;
+  flex-direction: column;
+  padding-top: 5vh;
 }
 
-.loginTitleContainer h1 {
+.imageContainer {
+  grid-column: 7 / span 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginImage {
+  max-width: 100%;
+  height: auto;
+}
+
+.loginTitle {
+  padding-top: 5vh;
+  grid-column: 1 / -1;
+  display: flex;
   font-size: 48px;
   font-weight: 600;
   line-height: 65.37px;
   text-align: left;
 }
 
-.loginFormContainer {
-  margin: 1rem;
-}
+@media (max-width: 768px) {
+  .loginPageContainer {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
 
-.formAndImageContainer {
-  display: flex;
-  justify-content: space-between;
-  width: 90%;
-}
+  .loginContent,
+  .imageContainer {
+    grid-column: 1 / -1;
+  }
 
-.loginImage {
-  max-width: 80vh;
+  .imageContainer {
+    display: none;
+  }
 }

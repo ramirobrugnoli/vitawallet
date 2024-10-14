@@ -19,15 +19,16 @@ const LoginPage = () => {
       setLoginError(error instanceof Error ? error.message : 'An unknown error occurred');
     }
   };
+
   return (
     <div className={styles.loginPageContainer}>
-      <div className={styles.loginTitleContainer}>
-        <h1>Iniciar sesión</h1>
-      </div>
-      <div className={styles.formAndImageContainer}>
+      <h1 className={styles.loginTitle}>Iniciar sesión</h1>
+      <div className={styles.loginContent}>
         <LoginForm onSubmit={handleLogin} />
         {isLoading && <p>Cargando...</p>}
         {loginError && <p className={styles.errorMessage}>{loginError}</p>}
+      </div>
+      <div className={styles.imageContainer}>
         <img src={amicoImage} alt="Amico" className={styles.loginImage} />
       </div>
     </div>

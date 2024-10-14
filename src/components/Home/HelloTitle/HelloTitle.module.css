@@ -1,0 +1,15 @@
+.helloTitle {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 38.13px;
+  text-align: left;
+  display: flex !important;
+  gap: 7px;
+}
+
+.helloTitle span {
+  background: var(--gradient-blue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

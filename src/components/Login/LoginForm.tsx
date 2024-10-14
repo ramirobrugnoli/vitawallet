@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from 'react';
 import styles from './LoginForm.module.css';
-import { ValidEmail, VisibilityIcon, VisibilityOffIcon } from './VisibilityIcons';
+import { ValidEmail, VisibilityIcon, VisibilityOffIcon } from '../VisibilityIcons';
 
 type LoginFormProps = {
   onSubmit: (email: string, password: string) => void;
@@ -37,7 +37,7 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
             type="email"
             id="email"
             value={email}
-            onChange={(e) => handleEmailChange(e)}
+            onChange={handleEmailChange}
             placeholder="juan@gmail.com"
             required
           />
@@ -63,9 +63,9 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
             {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </button>
         </div>
-        <div className={styles.forgotPassword}>
-          <a href="/recuperar-contrasena">¿Olvidaste tu contraseña?</a>
-        </div>
+      </div>
+      <div className={styles.forgotPassword}>
+        <a href="/recuperar-contrasena">¿Olvidaste tu contraseña?</a>
       </div>
       <button
         type="submit"

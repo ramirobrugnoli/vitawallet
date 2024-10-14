@@ -60,12 +60,16 @@ interface AppContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  isLoading: boolean;
+  error: string | null;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -79,6 +83,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [user]);
 
   const login = async (email: string, password: string) => {
+    setIsLoading(true);
+    setError(null);
     const myHeaders = new Headers();
     myHeaders.append('app-name', 'ANGIE');
 
@@ -108,8 +114,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem('client', response.headers.get('client') || '');
       localStorage.setItem('uid', response.headers.get('uid') || '');
     } catch (error) {
-      console.error('Login error:', error);
-      throw error;
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -121,7 +130,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('uid');
   };
 
-  return <AppContext.Provider value={{ user, login, logout }}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={{ user, login, logout, isLoading, error }}>
+      {children}
+    </AppContext.Provider>
+  );
 };
 
 export const useAppContext = () => {
