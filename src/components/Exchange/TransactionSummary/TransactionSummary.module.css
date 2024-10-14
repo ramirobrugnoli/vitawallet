@@ -168,3 +168,8 @@
   line-height: 21.79px;
   text-align: center;
 }
+
+.modalImage {
+  max-width: 304px;
+  max-height: 304px;
+}
