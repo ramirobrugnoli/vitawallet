@@ -1,0 +1,29 @@
+.tableContainer span {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32.68px;
+  text-align: left;
+}
+
+.tableContainer {
+  margin-top: 20px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.transactionTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transactionTable th,
+.transactionTable td {
+  padding: 12px;
+  text-align: left;
+}
+
+.transactionTable th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}

@@ -1,0 +1,27 @@
+.transactionRow:hover {
+  background-color: #f9f9f9;
+}
+
+.positive,
+.negative,
+.neutral {
+  font-family: Open Sans;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 21.79px;
+  text-align: right;
+}
+
+.positive {
+  color: var(--color-blue-2);
+}
+
+.negative {
+  color: var(--color-red);
+}
+
+.transactionRow {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-gray-2);
+}

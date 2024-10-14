@@ -8,8 +8,6 @@ type MyBalancesProps = {
 };
 
 const MyBalances = ({ balances }: MyBalancesProps) => {
-  console.log('balances en myBalances:', balances);
-
   const formatBalance = (currency: string, amount: number): string => {
     if (currency === 'btc') {
       return amount.toFixed(3);
@@ -20,22 +18,24 @@ const MyBalances = ({ balances }: MyBalancesProps) => {
 
   return (
     <>
-      <div className={styles.title}>
-        <span>Mis saldos</span>
-      </div>
-      <div className={styles.balancesContainer}>
-        {Object.entries(balances).map(([currency, amount]) => {
-          if (amount > 0) {
-            return (
-              <UnitBalance
-                key={currency}
-                balance={formatBalance(currency, amount)}
-                currency={currency}
-              />
-            );
-          }
-          return null;
-        })}
+      <div className={styles.myBalancesContainer}>
+        <div className={styles.title}>
+          <span>Mis saldos</span>
+        </div>
+        <div className={styles.balancesContainer}>
+          {Object.entries(balances).map(([currency, amount]) => {
+            if (amount > 0) {
+              return (
+                <UnitBalance
+                  key={currency}
+                  balance={formatBalance(currency, amount)}
+                  currency={currency}
+                />
+              );
+            }
+            return null;
+          })}
+        </div>
       </div>
     </>
   );

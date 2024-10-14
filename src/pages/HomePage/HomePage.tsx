@@ -1,20 +1,8 @@
 import React from 'react';
 import { useAppContext } from '../../context/AppContext';
-import { SidebarHome, HelloTitle } from '../../components/Home';
-import styles from './HomePage.module.css';
-import MyBalances from '../../components/Home/MyBalances/MyBalances';
+import { SidebarHome, Inicio } from '../../components/Home';
 
-const balancesTest = {
-  vita_card: 0,
-  usd: 0,
-  clp: 50000,
-  cop: 0,
-  ars: 0,
-  mxn: 0,
-  btc: 0.0045,
-  usdt: 56,
-  usdc: 12,
-};
+import styles from './HomePage.module.css';
 
 const HomePage = () => {
   const { user, logout } = useAppContext();
@@ -25,10 +13,7 @@ const HomePage = () => {
       <div className={styles.sidebarContainer}>
         <SidebarHome />
       </div>
-      <div className={styles.userInfoContainer}>
-        <HelloTitle userName={'David'} />
-        <MyBalances balances={balancesTest} />
-      </div>
+      <Inicio />
     </div>
   );
 };
