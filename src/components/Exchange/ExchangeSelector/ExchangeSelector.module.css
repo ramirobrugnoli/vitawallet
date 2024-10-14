@@ -1,6 +1,94 @@
-.exchangeContainer span {
+.exchangeTitle {
   font-size: 28px;
   font-weight: 600;
   line-height: 38.13px;
   text-align: left;
+}
+
+.exchangeBalance {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 21.79px;
+  text-align: left;
+  color: var(--color-blue-2);
+}
+
+.exchangeContainer {
+  height: 100% !important;
+}
+
+.exchangeBalance {
+  color: var(--color-blue-2);
+  margin-bottom: 20px;
+}
+
+.inputGroup {
+  margin-bottom: 20px;
+}
+
+.inputGroup label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.inputWithCurrency {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 50%;
+}
+
+.inputWithCurrency select {
+  padding: 10px;
+  border: none;
+  background-color: #f0f0f0;
+}
+
+.inputWithCurrency input {
+  flex-grow: 1;
+  padding: 10px;
+  border: none;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+  gap: 30px;
+}
+
+.backButton,
+.continueButton {
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: Open Sans;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 21.79px;
+  text-align: center;
+}
+
+.backButton {
+  background-color: #f0f0f0;
+  color: var(--color-blue-1);
+  width: 183px;
+  border: 1px solid transparent;
+  border-image-source: linear-gradient(90deg, #05bcb9 0%, #167287 100%);
+  border-image-slice: 1;
+  border-radius: 6px;
+}
+
+.continueButton {
+  background: var(--gradient-blue);
+  color: white;
+  padding: 16px 12px 16px 12px;
+  width: 183px;
+  border: none;
+}
+
+.continueButton:disabled {
+  background: var(--color-gray-2);
+  cursor: not-allowed;
 }

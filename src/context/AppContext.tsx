@@ -1,11 +1,8 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
-export interface Balance {
-  usd?: number;
-  usdc?: number;
-  usdt?: number;
-  btc?: number;
-}
+type Balance = {
+  [key: string]: number;
+};
 
 export interface LoginInfo {
   country: string;
@@ -70,6 +67,15 @@ export interface Transaction {
   };
 }
 
+type CryptoPrices = {
+  prices: {
+    [key: string]: {
+      [key: string]: number;
+    };
+  };
+  valid_until: string;
+};
+
 interface AppContextType {
   user: User | null;
   login: (username: string, password: string) => Promise<void>;
@@ -78,8 +84,11 @@ interface AppContextType {
   balances: Balance[];
   fetchTransactions: () => Promise<void>;
   fetchBalances: () => Promise<void>;
+  defaultCurrency: string;
   isLoading: boolean;
   error: string | null;
+  cryptoPrices: CryptoPrices | null;
+  fetchCryptoPrices: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -87,7 +96,9 @@ const AppContext = createContext<AppContextType | null>(null);
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [balances, setBalances] = useState<Balances[]>([]);
+  const [balances, setBalances] = useState<Balance[]>([]);
+  const [cryptoPrices, setCryptoPrices] = useState<CryptoPrices | null>(null);
+  const [defaultCurrency, setDefaultCurrency] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -102,6 +113,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if (user) {
       fetchTransactions();
       fetchBalances();
+      fetchCryptoPrices();
     }
   }, [user]);
 
@@ -217,8 +229,58 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
       const data = await response.json();
       setBalances(data.data.attributes.balances);
+      setDefaultCurrency(data.data.attributes.default_currency);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchCryptoPrices = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    const accessToken = localStorage.getItem('access-token');
+    const client = localStorage.getItem('client');
+    const uid = localStorage.getItem('uid');
+
+    if (!accessToken || !client || !uid) {
+      setError('Authentication headers are missing. Please log in again.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        'https://api.qa.vitawallet.io/api/users/get_crypto_multi_prices',
+        {
+          headers: {
+            'access-token': accessToken,
+            uid: uid,
+            client: client,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch crypto prices');
+      }
+
+      const data: CryptoPrices = await response.json();
+      console.log('data en crypto prices', data);
+      setCryptoPrices(data);
+      const validUntil = new Date(data.valid_until).getTime();
+      const now = new Date().getTime();
+      const timeUntilNextUpdate = Math.max(0, validUntil - now);
+
+      console.log('time until next update:', timeUntilNextUpdate);
+
+      setTimeout(fetchCryptoPrices, timeUntilNextUpdate);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'An error occurred while fetching crypto prices',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -236,6 +298,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         balances,
         fetchTransactions,
         fetchBalances,
+        defaultCurrency,
+        cryptoPrices,
+        fetchCryptoPrices,
       }}
     >
       {children}

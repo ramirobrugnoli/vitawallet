@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import HelloTitle from '../HelloTitle/HelloTitle';
 import MyBalances from '../MyBalances/MyBalances';
 import TransactionHistory from '../TransactionHistory/TransactionHistory';
