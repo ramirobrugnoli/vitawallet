@@ -22,9 +22,9 @@ export const currencyIcons: { [key: string]: string } = {
 const ExchangeSelector = () => {
   const { balances, cryptoPrices } = useAppContext();
   const [fromCurrency, setFromCurrency] = useState('usd');
-  const [toCurrency, setToCurrency] = useState('btc');
-  const [fromAmount, setFromAmount] = useState('0');
-  const [toAmount, setToAmount] = useState('0');
+  const [toCurrency, setToCurrency] = useState('usdc');
+  const [fromAmount, setFromAmount] = useState('');
+  const [toAmount, setToAmount] = useState('');
   const [isValid, setIsValid] = useState(false);
   const [lastEdited, setLastEdited] = useState<'from' | 'to'>('from');
   const [currentStep, setCurrentStep] = useState<'select' | 'summary' | 'feedback'>('select');
@@ -56,7 +56,7 @@ const ExchangeSelector = () => {
     : [];
 
   useEffect(() => {
-    if (cryptoPrices && fromAmount && toAmount) {
+    if (cryptoPrices && fromAmount) {
       const rate = cryptoPrices.prices[fromCurrency.toLowerCase()][toCurrency.toLowerCase()];
       const available = balances[fromCurrency] || 0;
 
@@ -64,7 +64,7 @@ const ExchangeSelector = () => {
         const calculatedAmount = parseFloat(fromAmount) * rate;
         setToAmount(calculatedAmount.toFixed(8));
         setIsValid(parseFloat(fromAmount) > 0 && parseFloat(fromAmount) <= available);
-      } else if (lastEdited === 'to') {
+      } else if (lastEdited === 'to' && toAmount) {
         const calculatedAmount = parseFloat(toAmount) / rate;
         setFromAmount(calculatedAmount.toFixed(8));
         setIsValid(calculatedAmount > 0 && calculatedAmount <= available);
@@ -145,6 +145,7 @@ const ExchangeSelector = () => {
               placeholder="0,00"
               min="0"
               className={styles.amountInput}
+              step="0.01"
             />
           </div>
         </div>
@@ -164,6 +165,7 @@ const ExchangeSelector = () => {
               placeholder="0,00"
               min="0"
               className={styles.amountInput}
+              step="0.01"
             />
           </div>
         </div>

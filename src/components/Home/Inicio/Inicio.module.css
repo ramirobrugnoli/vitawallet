@@ -4,3 +4,45 @@
   gap: 30px;
   max-width: 90vh;
 }
+
+.credentialsExpired,
+.credentialsExpired button {
+  font-family: Open Sans;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32.68px;
+  text-align: left;
+}
+
+.credentialsExpired button {
+  background: none;
+  border: 2px solid var(--color-blue-2);
+  color: var(--color-blue-2);
+  font-family: Open Sans;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32.68px;
+  text-align: left;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  transform: perspective(1000px) translateZ(0);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  will-change: transform, background-color, color;
+}
+
+.credentialsExpired button:hover {
+  cursor: pointer;
+  background: var(--gradient-blue);
+  color: white;
+  transform: perspective(1000px) rotateX(10deg) translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.credentialsExpired button:active {
+  transform: perspective(1000px) rotateX(0deg) translateY(0px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease-in-out;
+}

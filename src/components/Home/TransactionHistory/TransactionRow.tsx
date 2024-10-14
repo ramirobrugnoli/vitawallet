@@ -31,7 +31,7 @@ const TransactionRow = ({ transaction }: TransactionRowProps) => {
 
   const getExchangeAmount = () => {
     if (total_in_exchange_currency) {
-      return `${getSign(true)} ${formatCurrency(parseFloat(total_in_exchange_currency), exchange_currency || '')}`;
+      return `${getSign(true)} ${formatCurrency(parseFloat(total_in_exchange_currency), currency || '')}`;
     }
     return `${getSign(false)} ${formatCurrency(parseFloat(amount), currency)}`;
   };

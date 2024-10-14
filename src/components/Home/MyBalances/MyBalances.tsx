@@ -4,7 +4,7 @@ import UnitBalance from './UnitBalance';
 import styles from './MyBalances.module.css';
 
 type MyBalancesProps = {
-  balances: Balance;
+  balances: Balance[];
 };
 
 const MyBalances = ({ balances }: MyBalancesProps) => {

@@ -69,8 +69,8 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
       </div>
       <button
         type="submit"
-        className={`${styles.submitButton} ${isEmailValid ? styles.active : ''}`}
-        disabled={!isEmailValid}
+        className={`${styles.submitButton} ${isEmailValid && password.length >= 3 ? styles.active : ''}`}
+        disabled={!isEmailValid || password.length < 3}
       >
         Iniciar sesión
       </button>

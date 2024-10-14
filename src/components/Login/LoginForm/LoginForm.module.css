@@ -31,12 +31,32 @@
 .inputIcons {
   position: absolute;
   right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 25%;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
+  transition: transform 0.1s;
+}
+
+.inputIcons:hover {
+  animation: rotateShake 0.3s ease-in-out both;
+}
+
+@keyframes rotateShake {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(25deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-25deg);
+  }
 }
 
 .forgotPassword {
@@ -63,6 +83,10 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-top: 5vh;
+  transition: all 0.3s ease-in-out;
+  transform: perspective(1000px) translateZ(0);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  will-change: transform, background-color, color;
 }
 
 .submitButton:hover {
@@ -87,4 +111,7 @@
 
 .submitButton.active:hover {
   opacity: 0.9;
+  transform: perspective(1000px) rotateX(10deg) translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
