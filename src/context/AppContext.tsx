@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { User, Transaction, Balance, CryptoPrices, ExchangeParams } from '../interfaces';
+import { authService, transactionService, profileService, cryptoService } from '../services/api';
 
 interface AppContextType {
   user: User | null;
@@ -46,35 +47,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     setError(null);
-    const myHeaders = new Headers();
-    myHeaders.append('app-name', 'ANGIE');
-
-    const urlencoded = new URLSearchParams();
-    urlencoded.append('email', email);
-    urlencoded.append('password', password);
-    urlencoded.append('dev_mode', 'true');
-
     try {
-      const response = await fetch('https://api.qa.vitawallet.io/api/auth/sign_in', {
-        method: 'POST',
-        headers: myHeaders,
-        body: urlencoded,
-      });
-
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-
-      const data = await response.json();
-      /* const userData: User = { email: data.data.email }; */
-
+      const { data, headers } = await authService.login(email, password);
       localStorage.setItem('user', JSON.stringify(data.data));
       setUser(data.data);
 
-      localStorage.setItem('access-token', response.headers.get('access-token') || '');
-      localStorage.setItem('client', response.headers.get('client') || '');
-      localStorage.setItem('uid', response.headers.get('uid') || '');
-      localStorage.setItem('expiry', response.headers.get('expiry') || '');
+      localStorage.setItem('access-token', headers.get('access-token') || '');
+      localStorage.setItem('client', headers.get('client') || '');
+      localStorage.setItem('uid', headers.get('uid') || '');
+      localStorage.setItem('expiry', headers.get('expiry') || '');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
       setError(errorMessage);
@@ -95,30 +76,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const fetchTransactions = async () => {
     setIsLoading(true);
     setError(null);
-
-    const accessToken = localStorage.getItem('access-token');
-    const client = localStorage.getItem('client');
-    const uid = localStorage.getItem('uid');
-
-    if (!accessToken || !client || !uid) {
-      setError('Authentication headers are missing. Please log in again.');
-      setIsLoading(false);
-      return;
-    }
     try {
-      const response = await fetch('https://api.qa.vitawallet.io/api/transactions', {
-        headers: {
-          'access-token': accessToken,
-          uid: uid,
-          client: client,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch transactions');
-      }
-
-      const data = await response.json();
+      const data = await transactionService.fetchTransactions();
       setTransactions(data.data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -130,30 +89,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const fetchBalances = async () => {
     setIsLoading(true);
     setError(null);
-
-    const accessToken = localStorage.getItem('access-token');
-    const client = localStorage.getItem('client');
-    const uid = localStorage.getItem('uid');
-
-    if (!accessToken || !client || !uid) {
-      setError('Authentication headers are missing. Please log in again.');
-      setIsLoading(false);
-      return;
-    }
     try {
-      const response = await fetch('https://api.qa.vitawallet.io/api/profile', {
-        headers: {
-          'access-token': accessToken,
-          uid: uid,
-          client: client,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch transactions');
-      }
-
-      const data = await response.json();
+      const data = await profileService.fetchProfile();
       setBalances(data.data.attributes.balances);
       setDefaultCurrency(data.data.attributes.default_currency);
     } catch (err) {
@@ -166,33 +103,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const fetchCryptoPrices = async () => {
     setIsLoading(true);
     setError(null);
-
-    const accessToken = localStorage.getItem('access-token');
-    const client = localStorage.getItem('client');
-    const uid = localStorage.getItem('uid');
-
-    if (!accessToken || !client || !uid) {
-      setError('Authentication headers are missing. Please log in again.');
-      setIsLoading(false);
-      return;
-    }
-
     try {
-      const response = await fetch(
-        'https://api.qa.vitawallet.io/api/users/get_crypto_multi_prices',
-        {
-          headers: {
-            'access-token': accessToken,
-            uid: uid,
-            client: client,
-          },
-        },
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch crypto prices');
-      }
-      const data: CryptoPrices = await response.json();
+      const data: CryptoPrices = await cryptoService.fetchCryptoPrices();
       setCryptoPrices(data);
       const validUntil = new Date(data.valid_until).getTime();
       const now = new Date().getTime();
@@ -209,32 +121,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const executeExchange = async (params: ExchangeParams) => {
-    const accessToken = localStorage.getItem('access-token');
-    const client = localStorage.getItem('client');
-    const uid = localStorage.getItem('uid');
-
-    if (!accessToken || !client || !uid) {
-      throw new Error('Authentication headers are missing. Please log in again.');
-    }
-
     try {
-      const response = await fetch('https://api.qa.vitawallet.io/api/transactions/exchange', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'access-token': accessToken,
-          client: client,
-          uid: uid,
-        },
-        body: JSON.stringify(params),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to execute exchange');
-      }
-
-      const data = await response.json();
-      //despues de hacer un intercasmbio actualizamos los balances y trans. para mantener la tabla actualizada
+      const data = await transactionService.executeExchange(params);
       await Promise.all([fetchBalances(), fetchTransactions()]);
       return data;
     } catch (error) {

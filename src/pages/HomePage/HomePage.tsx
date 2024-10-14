@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../../context/AppContext';
-import { SidebarHome, Inicio, Soon } from '../../components/Home';
+import { Inicio } from '../../components/Home';
 import { ExchangeSelector } from '../../components/Exchange';
+import { SidebarHome, Soon } from '../../components/common';
 
 import styles from './HomePage.module.css';
 
