@@ -16,6 +16,7 @@ const currencyIcons: { [key: string]: string } = {
   btc: btcImage,
   usdc: usdcImage,
   usdt: usdtImage,
+  default: defaultIcon,
 };
 
 const currencyNames: { [key: string]: string } = {

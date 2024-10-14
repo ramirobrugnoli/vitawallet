@@ -7,6 +7,7 @@ import btcImage from '../../../assets/Home/Bitcoin.png';
 import usdcImage from '../../../assets/Home/usdc.png';
 import usdtImage from '../../../assets/Home/Tether.png';
 import defaultIcon from '../../../assets/Home/defaultIcon.png';
+import { Balance } from '../../../context/AppContext';
 
 export const currencyIcons: { [key: string]: string } = {
   clp: clpImage,
@@ -19,10 +20,11 @@ export const currencyIcons: { [key: string]: string } = {
 const ExchangeSelector = () => {
   const { balances, cryptoPrices } = useAppContext();
   const [fromCurrency, setFromCurrency] = useState('usd');
-  const [toCurrency, setToCurrency] = useState('BTC');
-  const [fromAmount, setFromAmount] = useState('');
-  const [toAmount, setToAmount] = useState('');
+  const [toCurrency, setToCurrency] = useState('btc');
+  const [fromAmount, setFromAmount] = useState(0);
+  const [toAmount, setToAmount] = useState(0);
   const [isValid, setIsValid] = useState(false);
+  const [lastEdited, setLastEdited] = useState<'from' | 'to'>('from');
 
   const availableCurrencies = Object.entries(balances)
     .filter(([_, balance]) => balance > 0)
@@ -33,15 +35,21 @@ const ExchangeSelector = () => {
     : [];
 
   useEffect(() => {
-    if (cryptoPrices && fromAmount) {
+    if (cryptoPrices) {
       const rate = cryptoPrices.prices[fromCurrency.toLowerCase()][toCurrency.toLowerCase()];
-      const calculatedAmount = parseFloat(fromAmount) * rate;
-      setToAmount(calculatedAmount.toFixed(8));
+      const available = balances[fromCurrency] || 0;
 
-      const available = balances[fromCurrency.toLowerCase()] || 0;
-      setIsValid(parseFloat(fromAmount) > 0 && parseFloat(fromAmount) <= available);
+      if (lastEdited === 'from' && fromAmount) {
+        const calculatedAmount = parseFloat(fromAmount) * rate;
+        setToAmount(calculatedAmount.toFixed(8));
+        setIsValid(parseFloat(fromAmount) > 0 && parseFloat(fromAmount) <= available);
+      } else if (lastEdited === 'to' && toAmount) {
+        const calculatedAmount = parseFloat(toAmount) / rate;
+        setFromAmount(calculatedAmount.toFixed(8));
+        setIsValid(calculatedAmount > 0 && calculatedAmount <= available);
+      }
     }
-  }, [fromAmount, fromCurrency, toCurrency, cryptoPrices, balances]);
+  }, [fromAmount, toAmount, fromCurrency, toCurrency, cryptoPrices, balances, lastEdited]);
 
   const fromOptions = availableCurrencies.map((currency) => ({
     value: currency,
@@ -57,6 +65,22 @@ const ExchangeSelector = () => {
 
   const handleFromAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFromAmount(e.target.value);
+    setLastEdited('from');
+  };
+
+  const handleToAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setToAmount(e.target.value);
+    setLastEdited('to');
+  };
+
+  const handleFromCurrencyChange = (value: string) => {
+    setFromCurrency(value);
+    setLastEdited('from');
+  };
+
+  const handleToCurrencyChange = (value: string) => {
+    setToCurrency(value);
+    setLastEdited('to');
   };
 
   return (
@@ -71,7 +95,11 @@ const ExchangeSelector = () => {
         <div className={styles.inputGroup}>
           <label>Monto a intercambiar</label>
           <div className={styles.inputRow}>
-            <CustomDropdown options={fromOptions} value={fromCurrency} onChange={setFromCurrency} />
+            <CustomDropdown
+              options={fromOptions}
+              value={fromCurrency}
+              onChange={handleFromCurrencyChange}
+            />
             <input
               type="number"
               value={fromAmount}
@@ -86,23 +114,21 @@ const ExchangeSelector = () => {
         <div className={styles.inputGroup}>
           <label>Quiero recibir</label>
           <div className={styles.inputRow}>
-            <CustomDropdown options={toOptions} value={toCurrency} onChange={setToCurrency} />
+            <CustomDropdown
+              options={toOptions}
+              value={toCurrency}
+              onChange={handleToCurrencyChange}
+            />
             <input
               type="number"
               value={toAmount}
-              readOnly
+              onChange={handleToAmountChange}
               placeholder="0,00"
+              min="0"
               className={styles.amountInput}
             />
           </div>
         </div>
-
-        {cryptoPrices && (
-          <p className={styles.exchangeRate}>
-            1 {fromCurrency} ={' '}
-            {cryptoPrices.prices[fromCurrency.toLowerCase()][toCurrency.toLowerCase()]} {toCurrency}
-          </p>
-        )}
       </div>
       <div className={styles.buttonGroup}>
         <button className={styles.backButton}>Atrás</button>

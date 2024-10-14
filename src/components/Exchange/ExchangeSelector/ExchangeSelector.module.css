@@ -1,7 +1,7 @@
 .exchangeContainer {
   margin: 0 auto;
-  padding: 20px;
-  height: 100% !important;
+  padding: 4vh 0vh 0vh 12vh;
+  height: 90% !important;
   justify-content: space-between;
   display: flex;
   flex-direction: column;
@@ -67,6 +67,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  gap: 15px;
 }
 
 .buttonGroup {
