@@ -4,4 +4,16 @@
   gap: 20px;
   margin: 0 auto;
   box-sizing: border-box;
+  height: 100vh;
+}
+
+.sidebarContainer {
+  grid-column: span 2;
+  height: 100%;
+}
+
+.contentContainer {
+  grid-column: span 10;
+  padding: 20px;
+  overflow-y: auto;
 }

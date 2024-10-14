@@ -25,17 +25,17 @@ const HomePage: React.FC = () => {
       case 'Inicio':
         return <Inicio />;
       case 'Transferir':
-        return null;
+        return <div>Contenido de Transferir</div>;
       case 'Recargar':
-        return null;
+        return <div>Contenido de Recargar</div>;
       case 'Intercambiar':
-        return null;
+        return <div>Contenido de Intercambiar</div>;
       case 'Perfil':
-        return null;
+        return <div>Contenido de Perfil</div>;
       case 'Ayuda':
-        return null;
+        return <div>Contenido de Ayuda</div>;
       default:
-        return null;
+        return <Inicio />;
     }
   };
 
