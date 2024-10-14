@@ -11,7 +11,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={user ? <Navigate to="/home" /> : <Navigate to="/login" />} />
       <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/home" />} />
-      <Route path="/home" element={/* user ?  */ <HomePage /> /* : <Navigate to="/login" /> */} />
+      <Route path="/home" element={user ? <HomePage /> : <Navigate to="/login" />} />
       <Route path="/exchange" element={user ? <ExchangePage /> : <Navigate to="/login" />} />
     </Routes>
   );

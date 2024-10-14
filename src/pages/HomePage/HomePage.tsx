@@ -3,6 +3,7 @@ import { useAppContext } from '../../context/AppContext';
 import {
   SidebarHome,
   Inicio,
+  Soon,
   /*   Transferir,
   Recargar,
   Intercambiar,
@@ -25,15 +26,15 @@ const HomePage: React.FC = () => {
       case 'Inicio':
         return <Inicio />;
       case 'Transferir':
-        return <div>Contenido de Transferir</div>;
+        return <Soon onSelectOption={handleSelectOption} />;
       case 'Recargar':
-        return <div>Contenido de Recargar</div>;
+        return <Soon onSelectOption={handleSelectOption} />;
       case 'Intercambiar':
-        return <div>Contenido de Intercambiar</div>;
+        return <Soon onSelectOption={handleSelectOption} />;
       case 'Perfil':
-        return <div>Contenido de Perfil</div>;
+        return <Soon onSelectOption={handleSelectOption} />;
       case 'Ayuda':
-        return <div>Contenido de Ayuda</div>;
+        return <Soon onSelectOption={handleSelectOption} />;
       default:
         return <Inicio />;
     }

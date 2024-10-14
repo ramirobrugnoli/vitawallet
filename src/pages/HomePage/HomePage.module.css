@@ -14,6 +14,6 @@
 
 .contentContainer {
   grid-column: span 10;
-  padding: 20px;
+  padding: 5vh;
   overflow-y: auto;
 }

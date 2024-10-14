@@ -1,0 +1,28 @@
+.soonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10vh;
+  align-items: center;
+}
+
+.soonImage {
+  width: 626px;
+  height: 640px;
+  transition:
+    transform 0.5s ease,
+    filter 0.5s ease;
+}
+
+.soonImage:hover {
+  transform: scale(1.1) translate(10px, -10px);
+  filter: brightness(1.1) saturate(1.1);
+  cursor: pointer;
+}
+
+.soonContainer span {
+  font-family: Open Sans;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 38.13px;
+  text-align: left;
+}
