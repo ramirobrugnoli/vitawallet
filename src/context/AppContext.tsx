@@ -67,6 +67,12 @@ export interface Transaction {
   };
 }
 
+interface ExchangeParams {
+  currency_sent: string;
+  currency_received: string;
+  amount_sent: number;
+}
+
 type CryptoPrices = {
   prices: {
     [key: string]: {
@@ -89,6 +95,7 @@ interface AppContextType {
   error: string | null;
   cryptoPrices: CryptoPrices | null;
   fetchCryptoPrices: () => Promise<void>;
+  executeExchange: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -286,6 +293,39 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const executeExchange = async (params: ExchangeParams) => {
+    const accessToken = localStorage.getItem('access-token');
+    const client = localStorage.getItem('client');
+    const uid = localStorage.getItem('uid');
+
+    if (!accessToken || !client || !uid) {
+      throw new Error('Authentication headers are missing. Please log in again.');
+    }
+
+    try {
+      const response = await fetch('https://api.qa.vitawallet.io/api/transactions/exchange', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'access-token': accessToken,
+          client: client,
+          uid: uid,
+        },
+        body: JSON.stringify(params),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to execute exchange');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error executing exchange:', error);
+      throw error;
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -301,6 +341,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         defaultCurrency,
         cryptoPrices,
         fetchCryptoPrices,
+        executeExchange,
       }}
     >
       {children}

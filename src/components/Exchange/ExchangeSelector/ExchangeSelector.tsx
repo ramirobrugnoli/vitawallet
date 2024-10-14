@@ -7,6 +7,8 @@ import btcImage from '../../../assets/Home/Bitcoin.png';
 import usdcImage from '../../../assets/Home/usdc.png';
 import usdtImage from '../../../assets/Home/Tether.png';
 import defaultIcon from '../../../assets/Home/defaultIcon.png';
+import FeedbackScreen from '../FeedbackScreen/FeedbackScreen';
+import TransactionSummary from '../TransactionSummary/TransactionSummary';
 import { Balance } from '../../../context/AppContext';
 
 export const currencyIcons: { [key: string]: string } = {
@@ -21,10 +23,29 @@ const ExchangeSelector = () => {
   const { balances, cryptoPrices } = useAppContext();
   const [fromCurrency, setFromCurrency] = useState('usd');
   const [toCurrency, setToCurrency] = useState('btc');
-  const [fromAmount, setFromAmount] = useState(0);
-  const [toAmount, setToAmount] = useState(0);
+  const [fromAmount, setFromAmount] = useState('0');
+  const [toAmount, setToAmount] = useState('0');
   const [isValid, setIsValid] = useState(false);
   const [lastEdited, setLastEdited] = useState<'from' | 'to'>('from');
+  const [currentStep, setCurrentStep] = useState<'select' | 'summary' | 'feedback'>('select');
+
+  const handleContinue = () => {
+    setCurrentStep('summary');
+  };
+
+  const handleBack = () => {
+    setCurrentStep('select');
+  };
+
+  const handleConfirm = () => {
+    setCurrentStep('feedback');
+  };
+
+  const handleClose = () => {
+    setCurrentStep('select');
+    setFromAmount('');
+    setToAmount('');
+  };
 
   const availableCurrencies = Object.entries(balances)
     .filter(([_, balance]) => balance > 0)
@@ -35,15 +56,15 @@ const ExchangeSelector = () => {
     : [];
 
   useEffect(() => {
-    if (cryptoPrices) {
+    if (cryptoPrices && fromAmount && toAmount) {
       const rate = cryptoPrices.prices[fromCurrency.toLowerCase()][toCurrency.toLowerCase()];
       const available = balances[fromCurrency] || 0;
 
-      if (lastEdited === 'from' && fromAmount) {
+      if (lastEdited === 'from') {
         const calculatedAmount = parseFloat(fromAmount) * rate;
         setToAmount(calculatedAmount.toFixed(8));
         setIsValid(parseFloat(fromAmount) > 0 && parseFloat(fromAmount) <= available);
-      } else if (lastEdited === 'to' && toAmount) {
+      } else if (lastEdited === 'to') {
         const calculatedAmount = parseFloat(toAmount) / rate;
         setFromAmount(calculatedAmount.toFixed(8));
         setIsValid(calculatedAmount > 0 && calculatedAmount <= available);
@@ -82,6 +103,23 @@ const ExchangeSelector = () => {
     setToCurrency(value);
     setLastEdited('to');
   };
+
+  if (currentStep === 'summary') {
+    return (
+      <TransactionSummary
+        fromCurrency={fromCurrency}
+        toCurrency={toCurrency}
+        fromAmount={fromAmount}
+        toAmount={toAmount}
+        onConfirm={handleConfirm}
+        onBack={handleBack}
+      />
+    );
+  }
+
+  if (currentStep === 'feedback') {
+    return <FeedbackScreen onClose={handleClose} />;
+  }
 
   return (
     <div className={styles.exchangeContainer}>
@@ -132,7 +170,7 @@ const ExchangeSelector = () => {
       </div>
       <div className={styles.buttonGroup}>
         <button className={styles.backButton}>Atrás</button>
-        <button className={styles.continueButton} disabled={!isValid}>
+        <button className={styles.continueButton} disabled={!isValid} onClick={handleContinue}>
           Continuar
         </button>
       </div>
