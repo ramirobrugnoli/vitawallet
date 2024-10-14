@@ -4,6 +4,7 @@ import clpImage from '../../../assets/Home/Chile.png';
 import btcImage from '../../../assets/Home/Bitcoin.png';
 import usdcImage from '../../../assets/Home/usdc.png';
 import usdtImage from '../../../assets/Home/Tether.png';
+import defaultIcon from '../../../assets/Home/defaultIcon.png';
 
 interface UnitBalanceProps {
   currency: string;
@@ -34,7 +35,7 @@ const UnitBalance = ({ balance, currency }: UnitBalanceProps): JSX.Element => {
       <div className={styles.balanceName}>
         <span className={styles.currencyName}>{name}</span>
         <span className={styles.icon}>
-          <img src={iconSrc} alt={name} />
+          <img src={iconSrc ? iconSrc : defaultIcon} alt={name} />
         </span>
       </div>
       <div className={styles.balanceInfo}>

@@ -1,20 +1,7 @@
 import React from 'react';
 import styles from './TransactionHistory.module.css';
+import { Transaction } from '../../../context/AppContext';
 import TransactionRow from './TransactionRow';
-
-interface Transaction {
-  id: string;
-  type: string;
-  attributes: {
-    amount: string;
-    created_at: string;
-    currency: string;
-    description: string;
-    category: string;
-    category_translate: string;
-    status: string;
-  };
-}
 
 interface TransactionHistoryTableProps {
   transactions: Transaction[];

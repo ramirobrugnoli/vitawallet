@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from 'react';
 import styles from './LoginForm.module.css';
-import { ValidEmail, VisibilityIcon, VisibilityOffIcon } from '../VisibilityIcons';
+import { ValidEmail, VisibilityIcon, VisibilityOffIcon } from '../../VisibilityIcons';
 
 type LoginFormProps = {
   onSubmit: (email: string, password: string) => void;

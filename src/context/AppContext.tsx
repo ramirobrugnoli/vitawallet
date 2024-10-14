@@ -56,7 +56,19 @@ export interface User {
   };
 }
 
-interface Transaction {}
+export interface Transaction {
+  id: string;
+  type: string;
+  attributes: {
+    amount: string;
+    created_at: string;
+    currency: string;
+    description: string;
+    category: string;
+    category_translate: string;
+    status: string;
+  };
+}
 
 interface AppContextType {
   user: User | null;
