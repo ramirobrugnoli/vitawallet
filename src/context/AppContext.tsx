@@ -273,15 +273,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       if (!response.ok) {
         throw new Error('Failed to fetch crypto prices');
       }
-
       const data: CryptoPrices = await response.json();
-      console.log('data en crypto prices', data);
       setCryptoPrices(data);
       const validUntil = new Date(data.valid_until).getTime();
       const now = new Date().getTime();
       const timeUntilNextUpdate = Math.max(0, validUntil - now);
-
-      console.log('time until next update:', timeUntilNextUpdate);
 
       setTimeout(fetchCryptoPrices, timeUntilNextUpdate);
     } catch (err) {
