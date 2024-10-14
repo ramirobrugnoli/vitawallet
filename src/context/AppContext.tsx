@@ -1,31 +1,31 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
-interface Balances {
+export interface Balances {
   usd: number;
   usdc: number;
   usdt: number;
   btc: number;
 }
 
-interface LoginInfo {
+export interface LoginInfo {
   country: string;
   city: string;
   created_at: string;
   ip_address: string;
 }
 
-interface Address {
+export interface Address {
   bsc?: string;
   dummy?: string;
 }
 
-interface ActiveCryptos {
+export interface ActiveCryptos {
   btc: { addresses: Address[] };
   usdt: { addresses: Address[] };
   usdc: { addresses: Address[] };
 }
 
-interface UserAttributes {
+export interface UserAttributes {
   email: string;
   first_name: string;
   last_name: string;
@@ -45,7 +45,7 @@ interface UserAttributes {
   phone: string;
 }
 
-interface User {
+export interface User {
   id: string;
   type: string;
   attributes: UserAttributes;

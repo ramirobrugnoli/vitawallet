@@ -1,0 +1,32 @@
+.balanceItem {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-gray-3);
+  border: 2px solid var(--color-gray-2);
+  border-radius: 6px;
+  padding: 15px;
+  min-width: 230px;
+  height: 100px;
+  gap: 0px;
+  place-content: space-around;
+}
+
+.currencyName {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21.79px;
+  text-align: left;
+}
+
+.balanceAmount {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32.68px;
+  text-align: left;
+}
+
+.balanceName {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
