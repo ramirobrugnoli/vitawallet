@@ -10,7 +10,6 @@
   gap: 10px;
   display: flex;
   flex-direction: column;
-  max-width: 85%;
 }
 
 .transactionTable {
@@ -20,7 +19,7 @@
 
 .transactionTable th,
 .transactionTable td {
-  padding: 12px;
+  padding: 12px 0px;
   text-align: left;
 }
 

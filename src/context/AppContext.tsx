@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
-export interface Balances {
+export interface Balance {
   usd?: number;
   usdc?: number;
   usdt?: number;
@@ -33,7 +33,7 @@ export interface UserAttributes {
   document_type: string;
   document_number: string;
   daily_transbank_recharge_limit_total: string;
-  balances: Balances;
+  balances: Balance[];
   login_current: LoginInfo;
   login_last: LoginInfo;
   active_cryptos: ActiveCryptos;
@@ -75,7 +75,9 @@ interface AppContextType {
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
   transactions: Transaction[];
+  balances: Balance[];
   fetchTransactions: () => Promise<void>;
+  fetchBalances: () => Promise<void>;
   isLoading: boolean;
   error: string | null;
 }
@@ -85,6 +87,7 @@ const AppContext = createContext<AppContextType | null>(null);
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [balances, setBalances] = useState<Balances[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -98,6 +101,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (user) {
       fetchTransactions();
+      fetchBalances();
     }
   }, [user]);
 
@@ -185,9 +189,54 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const fetchBalances = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    const accessToken = localStorage.getItem('access-token');
+    const client = localStorage.getItem('client');
+    const uid = localStorage.getItem('uid');
+
+    if (!accessToken || !client || !uid) {
+      setError('Authentication headers are missing. Please log in again.');
+      setIsLoading(false);
+      return;
+    }
+    try {
+      const response = await fetch('https://api.qa.vitawallet.io/api/profile', {
+        headers: {
+          'access-token': accessToken,
+          uid: uid,
+          client: client,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch transactions');
+      }
+
+      const data = await response.json();
+      setBalances(data.data.attributes.balances);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <AppContext.Provider
-      value={{ user, login, logout, isLoading, error, transactions, fetchTransactions }}
+      value={{
+        user,
+        login,
+        logout,
+        isLoading,
+        error,
+        transactions,
+        balances,
+        fetchTransactions,
+        fetchBalances,
+      }}
     >
       {children}
     </AppContext.Provider>

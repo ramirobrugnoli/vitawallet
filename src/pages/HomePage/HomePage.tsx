@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../../context/AppContext';
-import {
-  SidebarHome,
-  Inicio,
-  Soon,
-  /*   Transferir,
-  Recargar,
-  Intercambiar,
-  Perfil,
-  Ayuda, */
-} from '../../components/Home';
+import { SidebarHome, Inicio, Soon } from '../../components/Home';
+import { ExchangeSelector } from '../../components/Exchange';
 
 import styles from './HomePage.module.css';
 
@@ -30,7 +22,7 @@ const HomePage: React.FC = () => {
       case 'Recargar':
         return <Soon onSelectOption={handleSelectOption} />;
       case 'Intercambiar':
-        return <Soon onSelectOption={handleSelectOption} />;
+        return <ExchangeSelector />;
       case 'Perfil':
         return <Soon onSelectOption={handleSelectOption} />;
       case 'Ayuda':

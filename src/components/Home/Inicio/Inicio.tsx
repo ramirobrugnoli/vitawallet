@@ -6,10 +6,8 @@ import styles from './Inicio.module.css';
 import { useAppContext } from '../../../context/AppContext';
 
 const Inicio = () => {
-  const { user, transactions } = useAppContext();
-  console.log('transactions en inicio', transactions);
+  const { user, transactions, balances } = useAppContext();
   const username = user?.attributes?.first_name || 'Invitado';
-  const balances = user?.attributes?.balances || {};
 
   return (
     <div className={styles.userInfoContainer}>

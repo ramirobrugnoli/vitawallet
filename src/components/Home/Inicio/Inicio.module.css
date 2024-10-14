@@ -2,5 +2,5 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
-  margin: 4vh 0vh 0vh 4vh;
+  max-width: 90vh;
 }
