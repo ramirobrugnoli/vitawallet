@@ -7,7 +7,6 @@ import btcImage from '../../../assets/Home/Bitcoin.png';
 import usdcImage from '../../../assets/Home/usdc.png';
 import usdtImage from '../../../assets/Home/Tether.png';
 import defaultIcon from '../../../assets/Home/defaultIcon.png';
-import FeedbackScreen from '../FeedbackScreen/FeedbackScreen';
 import TransactionSummary from '../TransactionSummary/TransactionSummary';
 import { Balance } from '../../../context/AppContext';
 
@@ -35,10 +34,6 @@ const ExchangeSelector = () => {
 
   const handleBack = () => {
     setCurrentStep('select');
-  };
-
-  const handleConfirm = () => {
-    setCurrentStep('feedback');
   };
 
   const handleClose = () => {
@@ -111,14 +106,9 @@ const ExchangeSelector = () => {
         toCurrency={toCurrency}
         fromAmount={fromAmount}
         toAmount={toAmount}
-        onConfirm={handleConfirm}
         onBack={handleBack}
       />
     );
-  }
-
-  if (currentStep === 'feedback') {
-    return <FeedbackScreen onClose={handleClose} />;
   }
 
   return (

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAppContext } from '../../../context/AppContext';
 import styles from './TransactionSummary.module.css';
 import { GoBackArrow } from '../../VisibilityIcons';
+import transactionConfirm from '../../../assets/Exchanges/transactionConfirm.png';
 
 interface TransactionSummaryProps {
   fromCurrency: string;
@@ -13,17 +14,18 @@ interface TransactionSummaryProps {
 
 interface SuccessModalProps {
   onClose: () => void;
+  currency: string;
 }
 
-const SuccessModal = ({ onClose }: SuccessModalProps) => (
+const SuccessModal = ({ onClose, currency }: SuccessModalProps) => (
   <div className={styles.modalOverlay}>
     <div className={styles.modalContent}>
       <button className={styles.closeButton} onClick={onClose}>
         ×
       </button>
-      <img src="/path/to/success-image.png" alt="Intercambio exitoso" />
+      <img src={transactionConfirm} alt="Intercambio exitoso" />
       <h3>¡Intercambio exitoso!</h3>
-      <p>Ya cuentas con los BTC en tu saldo.</p>
+      <p>Ya cuentas con los {currency.toUpperCase()} en tu saldo.</p>
     </div>
   </div>
 );
@@ -95,7 +97,7 @@ const TransactionSummary = ({
           Intercambiar
         </button>
       </div>
-      {showSuccessModal && <SuccessModal onClose={() => setShowSuccessModal(false)} />}
+      {showSuccessModal && <SuccessModal currency={toCurrency} onClose={() => onBack()} />}
     </div>
   );
 };
