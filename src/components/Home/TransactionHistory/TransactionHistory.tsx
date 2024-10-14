@@ -8,7 +8,6 @@ interface TransactionHistoryTableProps {
 }
 
 const TransactionHistory = ({ transactions }: TransactionHistoryTableProps) => {
-  console.log('transactions en tabla historica:', transactions);
   return (
     <div className={styles.tableContainer}>
       <span>Historial</span>

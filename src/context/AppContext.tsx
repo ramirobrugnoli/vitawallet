@@ -95,7 +95,7 @@ interface AppContextType {
   error: string | null;
   cryptoPrices: CryptoPrices | null;
   fetchCryptoPrices: () => Promise<void>;
-  executeExchange: () => Promise<void>;
+  executeExchange: (arg0: ExchangeParams) => Promise<any>;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -315,10 +315,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       }
 
       const data = await response.json();
+      //despues de hacer un intercasmbio actualizamos los balances y trans. para mantener la tabla actualizada
+      await Promise.all([fetchBalances(), fetchTransactions()]);
       return data;
     } catch (error) {
       console.error('Error executing exchange:', error);
-      throw error;
+      if (error instanceof Error) {
+        throw new Error(`Exchange failed: ${error.message}`);
+      } else {
+        throw new Error('An unknown error occurred during the exchange');
+      }
     }
   };
 

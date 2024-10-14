@@ -22,6 +22,7 @@
   max-height: 45vh;
   scrollbar-width: thin;
   overflow-y: scroll;
+  padding-right: 5px;
 }
 
 .transactionTable th,
