@@ -53,6 +53,7 @@ Esto iniciará el servidor de desarrollo. Abre [http://localhost:5173](http://lo
 ## Muestras del funcionamiento
 
 ![alt](https://i.ibb.co/QQSxy0j/image.png)
+
 Cuando levantamos la app, nos va a dirigir a la página de login, donde el botón se mantiene disabled hasta no reconocer un mail con estructura válida (con un regex) y una contraseña con más de 5 carácteres.
 
 ![alt](https://i.ibb.co/R9TWC8s/image.png)
