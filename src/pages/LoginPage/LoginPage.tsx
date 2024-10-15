@@ -24,9 +24,10 @@ const LoginPage = () => {
     <div className={styles.loginPageContainer}>
       <h1 className={styles.loginTitle}>Iniciar sesión</h1>
       <div className={styles.loginContent}>
-        <LoginForm onSubmit={handleLogin} />
-        {isLoading && <p>Cargando...</p>}
-        {loginError && <p className={styles.errorMessage}>{loginError}</p>}
+        <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
+        {loginError && (
+          <p className={styles.errorMessage}>{loginError}, por favor intente nuevamente.</p>
+        )}
       </div>
       <div className={styles.imageContainer}>
         <img src={amicoImage} alt="Amico" className={styles.loginImage} />

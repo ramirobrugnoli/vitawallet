@@ -4,9 +4,10 @@ import { ValidEmail, VisibilityIcon, VisibilityOffIcon } from '../../VisibilityI
 
 type LoginFormProps = {
   onSubmit: (email: string, password: string) => void;
+  isLoading: boolean;
 };
 
-const LoginForm = ({ onSubmit }: LoginFormProps) => {
+const LoginForm = ({ onSubmit, isLoading }: LoginFormProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -72,7 +73,7 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
         className={`${styles.submitButton} ${isEmailValid && password.length >= 3 ? styles.active : ''}`}
         disabled={!isEmailValid || password.length < 3}
       >
-        Iniciar sesión
+        {!isLoading ? 'Iniciar sesión' : <div className={styles.loadingSpinnerButton}></div>}
       </button>
     </form>
   );
