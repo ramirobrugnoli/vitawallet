@@ -1,8 +1,7 @@
 .userInfoContainer {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  max-width: 90vh;
+  max-width: 70%;
 }
 
 .credentialsExpired,

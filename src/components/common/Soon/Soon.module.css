@@ -6,8 +6,8 @@
 }
 
 .soonImage {
-  width: 626px;
-  height: 640px;
+  width: 50vh;
+  height: 50vh;
   transition:
     transform 0.5s ease,
     filter 0.5s ease;
