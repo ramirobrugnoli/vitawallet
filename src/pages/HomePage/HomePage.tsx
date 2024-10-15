@@ -6,7 +6,7 @@ import { SidebarHome, Soon } from '../../components/common';
 
 import styles from './HomePage.module.css';
 
-const HomePage: React.FC = () => {
+const HomePage = () => {
   const { user, logout } = useAppContext();
   const [selectedOption, setSelectedOption] = useState('Inicio');
 
