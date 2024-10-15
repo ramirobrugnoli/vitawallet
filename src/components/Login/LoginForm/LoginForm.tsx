@@ -73,7 +73,7 @@ const LoginForm = ({ onSubmit, isLoading }: LoginFormProps) => {
         className={`${styles.submitButton} ${isEmailValid && password.length >= 3 ? styles.active : ''}`}
         disabled={!isEmailValid || password.length < 3}
       >
-        {!isLoading ? 'Iniciar sesión' : <div className={styles.loadingSpinnerButton}></div>}
+        {!isLoading ? 'Iniciar sesión' : <div className="loadingSpinnerButton"></div>}
       </button>
     </form>
   );

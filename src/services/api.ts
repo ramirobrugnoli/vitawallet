@@ -64,11 +64,16 @@ export const transactionService = {
       body: JSON.stringify(params),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
+      if (data && data.error) {
+        throw new Error(data.error);
+      }
       throw new Error('Failed to execute exchange');
     }
 
-    return response.json();
+    return data;
   },
 };
 

@@ -108,7 +108,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setCryptoPrices(data);
       const validUntil = new Date(data.valid_until).getTime();
       const now = new Date().getTime();
+      const readableNow = new Date(now).toLocaleString();
       const timeUntilNextUpdate = Math.max(0, validUntil - now);
+      console.log(
+        `Se actualizo el precio de crytpo a las ${readableNow}, será valido durante ${Math.floor(timeUntilNextUpdate / 60000)} minutos`,
+      );
 
       setTimeout(fetchCryptoPrices, timeUntilNextUpdate);
     } catch (err) {
@@ -128,7 +132,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       console.error('Error executing exchange:', error);
       if (error instanceof Error) {
-        throw new Error(`Exchange failed: ${error.message}`);
+        throw new Error(error.message);
+      } else if (typeof error === 'object' && error !== null && 'error' in error) {
+        throw new Error((error as { error: string }).error);
       } else {
         throw new Error('An unknown error occurred during the exchange');
       }

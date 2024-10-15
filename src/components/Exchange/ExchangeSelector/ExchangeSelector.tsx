@@ -34,9 +34,8 @@ const ExchangeSelector = () => {
   const handleBack = () => {
     setCurrentStep('select');
   };
-
   const availableCurrencies = Object.entries(balances)
-    .filter(([_, balance]) => balance > 0)
+    .filter(([_, balance]) => typeof balance === 'number' && balance > 0)
     .map(([currency]) => currency);
 
   const allCryptoCurrencies = cryptoPrices
@@ -75,11 +74,17 @@ const ExchangeSelector = () => {
   const handleFromAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFromAmount(e.target.value);
     setLastEdited('from');
+    if (e.target.value == '') {
+      setFromAmount('0');
+    }
   };
 
   const handleToAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setToAmount(e.target.value);
     setLastEdited('to');
+    if (e.target.value == '') {
+      setToAmount('0');
+    }
   };
 
   const handleFromCurrencyChange = (value: string) => {

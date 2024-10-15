@@ -112,6 +112,18 @@
   padding: 16px 12px 16px 12px;
   width: 183px;
   border: none;
+  transition: all 0.3s ease-in-out;
+  transform: perspective(1000px) translateZ(0);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  will-change: transform, background-color, color;
+  text-align: -webkit-center;
+}
+
+.continueButton:hover {
+  opacity: 0.9;
+  transform: perspective(1000px) rotateX(10deg) translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modalOverlay {

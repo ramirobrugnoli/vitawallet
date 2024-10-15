@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useAppContext } from '../../../context/AppContext';
 import styles from './TransactionSummary.module.css';
 import { GoBackArrow } from '../../VisibilityIcons';
-import transactionConfirm from '../../../assets/Exchanges/transactionConfirm.png';
-import transactionError from '../../../assets/Exchanges/transactionError.png';
+import TransactionModal from './TransactionModal';
 
 interface TransactionSummaryProps {
   fromCurrency: string;
@@ -12,30 +11,6 @@ interface TransactionSummaryProps {
   toAmount: string;
   onBack: () => void;
 }
-
-interface TransactionModalProps {
-  onClose: () => void;
-  currency: string;
-  success: boolean;
-  message: string;
-}
-
-const TransactionModal = ({ onClose, currency, success, message }: TransactionModalProps) => (
-  <div className={styles.modalOverlay}>
-    <div className={styles.modalContent}>
-      <button className={styles.closeButton} onClick={onClose}>
-        ×
-      </button>
-      <img
-        className={styles.modalImage}
-        src={success ? transactionConfirm : transactionError}
-        alt={success ? 'Intercambio exitoso' : 'Error en el intercambio'}
-      />
-      <h3>{success ? '¡Intercambio exitoso!' : 'Error en el intercambio'}</h3>
-      <p>{message}</p>
-    </div>
-  </div>
-);
 
 const TransactionSummary = ({
   fromCurrency,
@@ -48,9 +23,11 @@ const TransactionSummary = ({
   const [showModal, setShowModal] = useState(false);
   const [transactionSuccess, setTransactionSuccess] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [loadingTransaction, setLoadingTransaction] = useState(false);
 
   const handleConfirm = async () => {
     try {
+      setLoadingTransaction(true);
       await executeExchange({
         currency_sent: fromCurrency,
         currency_received: toCurrency,
@@ -62,11 +39,12 @@ const TransactionSummary = ({
       setTransactionSuccess(false);
       setModalMessage(
         error instanceof Error
-          ? error.message
+          ? `Error en el intercambio: ${error.message}`
           : 'Ocurrió un error desconocido durante el intercambio.',
       );
     } finally {
       setShowModal(true);
+      setLoadingTransaction(false);
     }
   };
 
@@ -111,7 +89,7 @@ const TransactionSummary = ({
           Atrás
         </button>
         <button className={styles.continueButton} onClick={handleConfirm}>
-          Intercambiar
+          {!loadingTransaction ? 'Intercambiar' : <div className="loadingSpinnerButton"></div>}
         </button>
       </div>
       {showModal && (

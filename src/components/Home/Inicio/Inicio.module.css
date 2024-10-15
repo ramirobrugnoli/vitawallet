@@ -4,6 +4,12 @@
   max-width: 70%;
 }
 
+@media screen and (max-width: 1300px) {
+  .userInfoContainer {
+    max-width: 100%;
+  }
+}
+
 .credentialsExpired,
 .credentialsExpired button {
   font-family: Open Sans;
