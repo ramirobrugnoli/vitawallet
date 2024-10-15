@@ -8,7 +8,6 @@ import usdcImage from '../../../assets/Home/usdc.png';
 import usdtImage from '../../../assets/Home/Tether.png';
 import defaultIcon from '../../../assets/Home/defaultIcon.png';
 import TransactionSummary from '../TransactionSummary/TransactionSummary';
-import { Balance } from '../../../context/AppContext';
 
 export const currencyIcons: { [key: string]: string } = {
   clp: clpImage,
@@ -19,7 +18,7 @@ export const currencyIcons: { [key: string]: string } = {
 };
 
 const ExchangeSelector = () => {
-  const { balances, cryptoPrices } = useAppContext();
+  const { balances, cryptoPrices, fetchCryptoPrices } = useAppContext();
   const [fromCurrency, setFromCurrency] = useState('usd');
   const [toCurrency, setToCurrency] = useState('usdc');
   const [fromAmount, setFromAmount] = useState('');
@@ -28,18 +27,22 @@ const ExchangeSelector = () => {
   const [lastEdited, setLastEdited] = useState<'from' | 'to'>('from');
   const [currentStep, setCurrentStep] = useState<'select' | 'summary' | 'feedback'>('select');
 
+  useEffect(() => {
+    fetchCryptoPrices();
+
+    const intervalId = setInterval(() => {
+      fetchCryptoPrices();
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, [fetchCryptoPrices]);
+
   const handleContinue = () => {
     setCurrentStep('summary');
   };
 
   const handleBack = () => {
     setCurrentStep('select');
-  };
-
-  const handleClose = () => {
-    setCurrentStep('select');
-    setFromAmount('');
-    setToAmount('');
   };
 
   const availableCurrencies = Object.entries(balances)

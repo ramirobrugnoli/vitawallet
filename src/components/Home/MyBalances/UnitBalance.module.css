@@ -5,7 +5,7 @@
   border: 2px solid var(--color-gray-2);
   border-radius: 6px;
   padding: 15px;
-  min-width: 230px;
+  min-width: 170px;
   height: 100px;
   gap: 0px;
   place-content: space-around;
