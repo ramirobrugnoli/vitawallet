@@ -78,4 +78,4 @@ Si tenes alguna pregunta o comentario, no dudes en contactarme:
 
 ## Notas Adicionales
 
-Si bien considero que son esenciales, en este caso decidí no llevar a cabo los test de la app con jest, ya que prioricé la rápida entrega según lo charlado. Me enfoqué en cumplir con todos los requisitos e intente llevar a cabo las mejores prácticas del desarrollo de software.
+Si bien considero que son esenciales, en este caso decidí no llevar a cabo los test de la app con jest, ya que no eran mencionados en la consigna y prioricé la rápida entrega según lo charlado. Me enfoqué en cumplir con todos los requisitos e intente llevar a cabo las mejores prácticas del desarrollo de software.
