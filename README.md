@@ -1,6 +1,6 @@
 # My Vita Wallet App
 
-Esta aplicación es una implementación de prueba para Vita Wallet utilizando React y Vite, hecha por Ramiro Brugnoli para el challenge de front-end.
+Esta aplicación es una implementación de prueba para Vita Wallet utilizando React y Vite, hecha por Ramiro Brugnoli.
 
 ## Instalación
 
